@@ -5,20 +5,24 @@
 
 # player = ['Manuel', 10, 16, 100]
 
+from random import randint
+
 game_running = True
 
 while game_running == True:
     
     new_round = True
     player = {'name': 'Manuel', 'attack': 10, 'heal': 16, 'health': 100}
-    monster = {'name': 'Max', 'attack': 12, 'health': 100}
+    monster = {'name': 'Max', 'attack_min': 10, 'attack_max': 20, 'health': 100}
 
     print('---' * 7)
     print('Enter Player Name:')
     print('---' * 7)
     player['name'] = input()
 
-    print(player['name'])
+    print('---' * 7)
+    print(player['name'] + ' has ' + str(player['health']) + ' health.')
+    print(monster['name'] + ' has ' + str(monster['health']) + ' health.')
 
     while new_round == True:
 
@@ -45,18 +49,17 @@ while game_running == True:
                 player_won = True
 
             else:
-
-                player['health'] = player['health'] - monster['attack']
+                monster_attack = randint(monster['attack_min'], monster['attack_max'])
+                player['health'] = player['health'] - monster_attack
                 if player['health'] <= 0:
                     monster_won = True
-
-            print(monster_health_lbl + str(monster['health']))
-            print(player_health_lbl + str(player['health']))
 
         elif player_choice == 2:
 
             player['health'] = player['health'] + player['heal']
-            print(player_health_lbl + str(player['health']))
+            player['health'] = player['health'] - monster_attack
+            if player['health'] <= 0:
+                monster_won = True
 
         elif player_choice == 3:
 
@@ -77,7 +80,27 @@ while game_running == True:
 
             print('Invalid Input')
 
-        if player_won == True or monster_won == True:
+        if player_won == False and monster_won == False:
+            print('---' * 7)
+            print(player['name'] + ' has ' + str(player['health']) + ' health left.')
+            print(monster['name'] + ' has ' + str(monster['health']) + ' health left.')
+
+        elif player_won:
+            print('---' * 7)
+            print(player['name'] + ' won!')
+
+            print('---' * 7)
+            print('Results:')
+            print('---' * 7)
+            print(monster_health_lbl + str(monster['health']))
+            print(player_health_lbl + str(player['health']))
+            print('---' * 7)
+
+            new_round = False
+
+        elif monster_won:
+            print('---' * 7)
+            print(monster['name'] + ' the monster ' + ' won...')
             
             print('---' * 7)
             print('Results:')
